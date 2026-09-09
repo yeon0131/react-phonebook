@@ -35,6 +35,7 @@ input {
 
 button {
   color: inherit;
+  padding-top: 5px;
 }
 
 button:focus-visible,
@@ -555,17 +556,20 @@ input:focus-visible {
 }
 
 .contact-item {
-  display: grid;
-  grid-template-columns: 43px 1fr auto;
   min-height: 61px;
-  align-items: center;
-  gap: 9px;
   margin: 5px 3px 10px 1px;
   padding: 7px 9px 7px 6px;
   border: 3px solid var(--screen-ink);
   background: rgb(255 255 224 / 56%);
   box-shadow: 4px 4px 0 var(--screen-shadow);
   animation: contact-slide-up 520ms cubic-bezier(.2, 1.5, .45, 1) both;
+}
+
+.contact-item-main {
+  display: grid;
+  grid-template-columns: 43px 1fr auto;
+  align-items: center;
+  gap: 9px;
 }
 
 /* 새 항목이 마운트될 때 아래에서 위로 이동해 연락처가 올라오는 느낌을 줍니다. */
@@ -636,6 +640,122 @@ input:focus-visible {
   color: var(--hot-pink);
   font-family: Arial, sans-serif;
   font-size: 15px;
+}
+
+.contact-item-actions,
+.contact-editor-actions,
+.delete-confirm > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
+}
+
+.contact-item-actions {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 2px dashed rgb(50 73 35 / 55%);
+}
+
+.contact-item-actions button,
+.contact-editor-actions button,
+.delete-confirm button {
+  min-width: 0;
+  height: 28px;
+  border: 2px solid var(--screen-ink);
+  color: var(--screen-ink);
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 900;
+  background: #fff7a5;
+  box-shadow: 2px 2px 0 var(--screen-shadow);
+  cursor: pointer;
+}
+
+.contact-item-actions button:last-child,
+.delete-confirm button:first-child {
+  color: #8a245a;
+  background: #ffacd2;
+}
+
+.contact-item-actions button:active,
+.contact-editor-actions button:active,
+.delete-confirm button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.contact-item-actions small {
+  margin-left: 5px;
+  font-size: 9px;
+}
+
+.contact-edit-form {
+  padding: 2px;
+}
+
+.edit-title {
+  margin: 0 0 7px;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.contact-edit-field {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+.contact-edit-field span {
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.contact-edit-field input {
+  width: 100%;
+  min-width: 0;
+  height: 29px;
+  padding: 3px 5px;
+  border: 2px solid var(--screen-ink);
+  border-radius: 0;
+  color: var(--screen-ink);
+  font-size: 12px;
+  font-weight: 900;
+  background: rgb(255 255 224 / 70%);
+}
+
+.contact-edit-field input:focus-visible,
+.contact-item button:focus-visible {
+  outline-color: var(--hot-pink);
+}
+
+.contact-editor-actions {
+  margin-top: 8px;
+}
+
+.contact-editor-actions button:first-child {
+  background: #b9ed83;
+}
+
+.contact-editor-actions button:last-child {
+  background: #d8e8a8;
+}
+
+.delete-confirm {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 2px dashed var(--screen-ink);
+}
+
+.delete-confirm p {
+  margin: 0 0 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
 }
 
 .empty-state {

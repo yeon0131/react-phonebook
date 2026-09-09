@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import usePhonebookStore from '../stores/usePhonbookStore'
 
 const formatPhoneNumber = (phoneNumber) => {
@@ -17,8 +18,48 @@ const formatPhoneNumber = (phoneNumber) => {
 
 const ContactList = () => {
   const phoneBook = usePhonebookStore((state) => state.phoneBook)
+  const updateContact = usePhonebookStore((state) => state.updateContact)
+  const deleteContact = usePhonebookStore((state) => state.deleteContact)
+  const [editingId, setEditingId] = useState(null)
+  const [deleteTargetId, setDeleteTargetId] = useState(null)
+  const [editName, setEditName] = useState('')
+  const [editPhoneNumber, setEditPhoneNumber] = useState('')
+
   // 원본 배열은 건드리지 않고 복사한 뒤 뒤집어, 최근 연락처가 위에 보이게 합니다.
   const latestContacts = [...phoneBook].reverse()
+
+  const startEditing = (contact) => {
+    // 수정 버튼을 누른 연락처의 현재 값을 편집 입력창에 먼저 복사합니다.
+    setEditingId(contact.id)
+    setEditName(contact.name)
+    setEditPhoneNumber(contact.phoneNumber)
+    setDeleteTargetId(null)
+  }
+
+  const cancelEditing = () => {
+    setEditingId(null)
+    setEditName('')
+    setEditPhoneNumber('')
+  }
+
+  const handleEditPhoneChange = (event) => {
+    const onlyNumbers = event.target.value.replace(/\D/g, '').slice(0, 11)
+    setEditPhoneNumber(onlyNumbers)
+  }
+
+  const handleUpdate = (event, id) => {
+    event.preventDefault()
+
+    if (!editName.trim() || !editPhoneNumber) return
+
+    updateContact(id, editName.trim(), editPhoneNumber)
+    cancelEditing()
+  }
+
+  const confirmDelete = (id) => {
+    deleteContact(id)
+    setDeleteTargetId(null)
+  }
 
   return (
     <article className="pixel-phone pixel-phone--blue" aria-labelledby="list-phone-title">
@@ -56,14 +97,80 @@ const ContactList = () => {
           ) : (
             latestContacts.map((item, index) => (
               <div className="contact-item" key={item.id}>
-                <div className={`contact-avatar contact-avatar--${(index % 3) + 1}`} aria-hidden="true">
-                  {item.name.slice(0, 1).toUpperCase()}
-                </div>
-                <div className="contact-info">
-                  <p className="name">{item.name}</p>
-                  <p className="phone-number">{formatPhoneNumber(item.phoneNumber)}</p>
-                </div>
-                <span className="contact-heart" aria-hidden="true">♥</span>
+                {editingId === item.id ? (
+                  <form className="contact-edit-form" onSubmit={(event) => handleUpdate(event, item.id)}>
+                    <p className="edit-title">EDIT CONTACT_</p>
+
+                    <label className="contact-edit-field">
+                      <span>NAME</span>
+                      <input
+                        value={editName}
+                        onChange={(event) => setEditName(event.target.value)}
+                        maxLength={12}
+                        aria-label="수정할 이름"
+                        required
+                      />
+                    </label>
+
+                    <label className="contact-edit-field">
+                      <span>NUMBER</span>
+                      <input
+                        type="tel"
+                        inputMode="numeric"
+                        value={editPhoneNumber}
+                        onChange={handleEditPhoneChange}
+                        maxLength={11}
+                        aria-label="수정할 전화번호"
+                        required
+                      />
+                    </label>
+
+                    <div className="contact-editor-actions">
+                      <button type="submit">SAVE</button>
+                      <button type="button" onClick={cancelEditing}>CANCEL</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <div className="contact-item-main">
+                      <div className={`contact-avatar contact-avatar--${(index % 3) + 1}`} aria-hidden="true">
+                        {item.name.slice(0, 1).toUpperCase()}
+                      </div>
+                      <div className="contact-info">
+                        <p className="name">{item.name}</p>
+                        <p className="phone-number">{formatPhoneNumber(item.phoneNumber)}</p>
+                      </div>
+                      <span className="contact-heart" aria-hidden="true">♥</span>
+                    </div>
+
+                    {deleteTargetId === item.id ? (
+                      <div className="delete-confirm" role="alert">
+                        <p><strong>{item.name}</strong> 연락처를 삭제할까요?</p>
+                        <div>
+                          <button type="button" onClick={() => confirmDelete(item.id)}>YES</button>
+                          <button type="button" onClick={() => setDeleteTargetId(null)}>NO</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="contact-item-actions">
+                        <button
+                          type="button"
+                          onClick={() => startEditing(item)}
+                          aria-label={`${item.name} 연락처 수정`}
+                        >
+                          <span>EDIT</span><small>수정</small>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteTargetId(item.id)}
+                          aria-label={`${item.name} 연락처 삭제`}
+                        >
+                          <span>DEL</span><small>삭제</small>
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             ))
           )}
