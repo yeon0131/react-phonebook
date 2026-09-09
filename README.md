@@ -3,10 +3,19 @@
 <h1>📟 픽셀 전화번호부</h1>
 <p><strong>레트로 픽셀 피처폰 디자인으로 만든 연락처 관리 애플리케이션</strong></p>
 <p>이름과 전화번호를 저장하고, 실제 휴대폰처럼 화면 속 숫자 키패드로 번호를 입력할 수 있습니다.</p>
+<p><a href="https://pixel-phonebook.netlify.app/">🌐 배포 사이트 바로가기</a></p>
 
 </div>
 
 ---
+
+## 배포 주소
+
+[https://pixel-phonebook.netlify.app/](https://pixel-phonebook.netlify.app/)
+
+## 실행 화면
+
+[![픽셀 전화번호부 실행 화면](./docs/images/pixel-phonebook-preview.png)](https://pixel-phonebook.netlify.app/)
 
 ## 프로젝트 소개
 
