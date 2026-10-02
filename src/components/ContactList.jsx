@@ -92,7 +92,7 @@ const ContactList = () => {
               <div className="empty-face" aria-hidden="true">•ᴗ•</div>
               <strong>NO CONTACTS YET!</strong>
               <p>왼쪽 폰에서<br />첫 연락처를 저장해 보세요.</p>
-              <span aria-hidden="true">↓</span>
+              <span aria-hidden="true">↑</span>
             </div>
           ) : (
             latestContacts.map((item, index) => (
